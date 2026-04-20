@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow - semestrální projekt</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div class="brand">
+        <h1>TaskFlow</h1>
+      </div>
+      <div id="userBox" class="user-box hidden">
+        <div class="pill" id="userBadge"></div>
+        <button id="logoutBtn" class="btn-secondary">Odhlásit</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <section id="authPage">
+      <div class="auth-layout">
+        <div class="card">
+          <h3>Registrace</h3>
+          <div id="registerMessage"></div>
+          <div class="field">
+            <label for="registerUsername">Uživatelské jméno</label>
+            <input id="registerUsername" type="text" maxlength="24" placeholder="např. vojta" />
+          </div>
+          <div class="field">
+            <label for="registerPassword">Heslo</label>
+            <input id="registerPassword" type="password" maxlength="40" placeholder="alespoň 4 znaky" />
+          </div>
+          <button id="registerBtn" class="btn-primary">Vytvořit účet</button>
+        </div>
+
+        <div class="card">
+          <h3>Přihlášení</h3>
+          <div id="loginMessage"></div>
+          <div class="field">
+            <label for="loginUsername">Uživatelské jméno</label>
+            <input id="loginUsername" type="text" placeholder="uživatelské jméno" />
+          </div>
+          <div class="field">
+            <label for="loginPassword">Heslo</label>
+            <input id="loginPassword" type="password" placeholder="heslo" />
+          </div>
+          <button id="loginBtn" class="btn-primary">Přihlásit se</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="appPage" class="hidden">
+      <div class="main-layout">
+        <aside class="card">
+          <h3 id="formTitle">Nový úkol</h3>
+          <div id="taskMessage"></div>
+
+          <div class="field">
+            <label for="taskTitle">Název úkolu</label>
+            <input id="taskTitle" type="text" maxlength="70" placeholder="např. Dopsat dokumentaci" />
+          </div>
+
+          <div class="field">
+            <label for="taskDueDate">Termín</label>
+            <input id="taskDueDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label>Priorita</label>
+            <div class="priority-group" id="priorityGroup">
+              <button class="priority-option active" data-priority="low" type="button">Nízká</button>
+              <button class="priority-option" data-priority="medium" type="button">Střední</button>
+              <button class="priority-option" data-priority="high" type="button">Vysoká</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Štítky (vlastní input)</label>
+            <div id="tagInput" class="tag-input">
+              <input id="tagTextInput" type="text" placeholder="napiš štítek a dej Enter" />
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button id="saveTaskBtn" class="btn-primary">Uložit úkol</button>
+          </div>
+        </aside>
+
+        <section>
+          <div id="dashboardTab" class="tab-panel">
+            <div class="stats" id="stats"></div>
+            <div class="card">
+              <h3>Rychlý přehled</h3>
+              <p class="muted">
+                Tady vidíš souhrn svých dat. Úkoly a poznámky jsou vázané ke konkrétnímu přihlášenému uživateli.
+              </p>
+              <div id="dashboardList" class="task-list"></div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer-note container">
+    TaskFlow - Semestrální práce by Vojtěch Gerö.
+  </div>
+  <script src="index.js" />
+</body>
+
+</html>
