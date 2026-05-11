@@ -203,6 +203,31 @@ function formatDate(value) {
     return new Intl.DateTimeFormat("cs-CZ").format(date);
 }
 
+function isOverdue(dueDate) {
+    if (!dueDate) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+
+    return due < today;
+}
+
+function overdueDays(dueDate) {
+    if (!isOverdue(dueDate)) return 0;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+
+    const diff = today - due;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
 function renderStats() {
     const user = currentUser();
     if (!user) return;
@@ -211,6 +236,9 @@ function renderStats() {
     const done = tasks.filter((task) => task.done).length;
     const high = tasks.filter(
         (task) => task.priority === "high" && !task.done,
+    ).length;
+    const overdue = tasks.filter(
+        (task) => !task.done && isOverdue(task.dueDate)
     ).length;
 
     els.stats.innerHTML = `
@@ -230,6 +258,10 @@ function renderStats() {
           <div class="muted">Vysoká priorita</div>
           <div class="value">${high}</div>
         </div>
+        <div class="stat">
+            <div class="muted">Po termínu</div>
+            <div class="value">${overdue}</div>
+        </div>
       `;
 }
 
@@ -237,15 +269,19 @@ function taskCardTemplate(task) {
     const tags = task.tags
         .map((tag) => `<span class="meta">#${escapeHtml(tag)}</span>`)
         .join("");
-
+    const overdueBadge =
+        isOverdue(task.dueDate) && !task.done
+            ? `<span class="meta overdue-badge">Po termínu ${overdueDays(task.dueDate)} dní</span>`
+            : "";
     return `
-        <article class="task-card priority-${task.priority} ${task.done ? "done" : ""}">
+        <article class="task-card priority-${task.priority} ${task.done ? "done" : ""} ${isOverdue(task.dueDate) && !task.done ? "overdue" : ""}">
           <div class="task-top">
             <div>
               <h4>${escapeHtml(task.title)}</h4>
               <div class="meta-row">
                 <span class="meta">Priorita: ${task.priority}</span>
                 ${getDateSpan(task.dueDate)}
+                ${overdueBadge}
                 <span class="meta">Stav: ${task.done ? "hotovo" : "otevřeno"}</span>
               </div>
             </div>
